@@ -1,59 +1,11 @@
-************************************************************************************
-                            PSEUDOCODE QUICK REFERENCE
-************************************************************************************
-
-++++++++++++++++++++++++++++++++
-        COMMON KEYWORDS
-++++++++++++++++++++++++++++++++
-
-SEQUENCE        Linear execution of steps, one after another
-WHILE           Loop with a condition at the beginning
-REPEAT-UNTIL    Loop with a condition at the end
-FOR	            Looping a fixed number of times
-IF-THEN-ELSE    Conditional statement, alters flow based on conditions
-CASE	        Generalized form of IF-THEN-ELSE for multiple options
-CALL            Invoke a function or class
-EXCEPTION/WHEN  Handle errors
-FUNCTION	    Defines a function that returns a value
-PROCEDURE/SUB	Defines a procedure that does not return a value
-CALL	        Calls a function or procedure
-RETURN	        Returns a value from a function
-PARAMETERS	    Define inputs to functions
-CLASS	        Define a class or object blueprint
-ATTRIBUTES	    List properties/fields of an object
-METHOD	        Define a method inside a class
-NEW	            Create a new instance of a class
-CALL	        Call a method on an object
-SET / GET	    Optional keywords for setting or retrieving attributes
-
-
-
-++++++++++++++++++++++++++++++++
-        GUIDANCE
-++++++++++++++++++++++++++++++++
-
-1. Capitalize the initial word (usually a construct like IF, FOR, WHILE).
-
-2. One statement per line.
-
-3. Indent to show hierarchy and nesting.
-
-4. End multi-line constructs explicitly (e.g., ENDIF, ENDWHILE).
-
-5. Keep it language-independent.
-
-6. Use problem-domain naming rather than implementation details.
-
-    Example: Append last name to first name instead of name = first + last.
-
-7. Keep statements simple, concise, and readable.
-
+--------------------------------------------------------------------------------
+                            ROCK PAPER SCISSORS GAME
+--------------------------------------------------------------------------------
 
 
 --------------------------------------------------------------------------------
-                        ROCK PAPER SCISSORS GAME
+                        GAME PROGRAM
 --------------------------------------------------------------------------------
-
 
 
 *************************************************************
@@ -61,43 +13,38 @@ SET / GET	    Optional keywords for setting or retrieving attributes
 *************************************************************
 
 
-
 FUNCTION playGame()
 
-    FUNCTION CALL gameState()
-        INIT userScore 0, computerScore 0, roundCounter 0
-        RETURNS NOTHING
+    SET gameState with FUNCTION CALL gameStateTracker()
+        currentGameState object with key/value Pairs userScore 0, computerScore 0, roundCounter 0
+        RETURNS currentGameState
 
     WHILE gameState.roundCounter is less than 5:
 
-        FUNCTION CALL fiveRoundsCounter(gameState.roundCounter)
-                RETURNS ++roundCounter
+        UPDATE roundCounter with FUNCTION CALL fiveRoundsCounter(gameState.roundCounter)
+            RETURNS INCREMENT roundCounter by 1
         
-        FUNCTION CALL assignComputerChoice()
+        UPDATE computerChoice with FUNCTION CALL getComputerChoice()
             RETURNS computerChoice assigned with "ROCK", "PAPER", or "SCISSORS"
 
         LOG - Tell user to enter their choice of "ROCK", "PAPER", or "SCISSORS"
 
-        FUNCTION CALL getUserChoice(input)
+        UPDATE userChoice with FUNCTION CALL getUserChoice()
             RETURNS userChoice in an uppercase string containing either "ROCK", "PAPER", or "SCISSORS"
 
-        FUNCTION CALL determineRoundWinner(getUserChoice.userChoice, assignComputerChoice.computerChoice)
-            Compares user and computer selections and determines the winner of the round
-            RETURNS roundWinner
+        UPDATE roundWinner with FUNCTION CALL determineRoundWinner(userChoice, computerChoice)
+            Compares user and computer selections and determines the winner of the round.
+            RETURNS roundWinner with value "TIE", userRoundWinner, or computerRoundWinner
 
-        FUNCTION CALL assignRoundWinner(determineRoundWinner.roundWinner)
-            Takes the value of roundWinner and assigns a placeholder value for the round prompt
-            RETURN roundWinner with value "TIE", userRoundWinner, or computerRoundWinner
+        FUNCTION CALL announceRoundWinner(roundWinner)
+            Announces the winner of this round
+            RETURNS LOG tell user it's a tie, or that they won, or that the computer won
 
-        FUNCTION CALL increaseWinnerScore(determineRoundWinner.roundWinner)
+        FUNCTION CALL increaseWinnerScore(roundWinner)
             Increases the score of the one who won the round
-            RETURNS ++userScore or ++computerScore
+            RETURNS LOG tell the user the scores of both players
 
-        FUNCTION CALL announceRoundWinner(assignRoundWinner.roundWinner)
-            Announces the winner using the variable assignRoundWinner.roundWinner which contains either the "TIE", userRoundWinner, or computerRoundWinner value.
-            RETURNS LOG tell user it's a tie, or that they won, of that the computer won
-
-        IF fiveRoundsCounter.roundCounter is 5:
+        IF gameState.roundCounter is 5:
             Exit while loop
 
     END WHILE
@@ -109,7 +56,7 @@ END FUNCTION
 
 FUNCTION gameOver()
 
-        LOG - Tell the user if they want to play another game
+        LOG - Ask the user if they want to play another game
 
         FUNCTION CALL getUserChoice(input)
         RETURNS userChoice with value YES or NO
@@ -123,6 +70,10 @@ FUNCTION gameOver()
 END FUNCTION
 
 
+--------------------------------------------------------------------------------
+                        UTILITY FUNCTIONS
+--------------------------------------------------------------------------------
+
 
 *************************************************************
         gameState - Initialize game state variables
@@ -130,19 +81,24 @@ END FUNCTION
 
 /*----- This will initialize the variables needed for the game. -----*/
 
-FUNCTION - gameState
+FUNCTION - gameStateTracker
 
+    *--- This will make these variables accessible outside this scope ---*/
+    
+    SET gameState with CREATE OBJECT with key/value pairs:
 
-        INIT userScore at 0             
+        userScore at 0
         /*--- This will keep track of the user score, which will be used to determine the game winner ---*/
 
-
-        INIT computerScore at 0          
+        computerScore at 0
         /*--- This will keep track of the computer score, which will be used to determine the game winner ---*/
 
-
-        INIT roundCounter at 0
+        roundCounter at 0
         /*--- This will keep track of the rounds played, which will be used to determine when the game is over ---*/
+
+        RETURN gameState
+
+    END OBJECT
 
 END FUNCTION
 
@@ -170,7 +126,7 @@ END FUNCTION
 
 /*----- This will determine the computerChoice for the round. It will randomize a number from 1 to 3, which will output ROCK, PAPER, or SCISSORS respectively -----*/
 
-FUNCTION: assignComputerChoice()
+FUNCTION: getComputerChoice()
      Randomly select a number between 1 and 3
 
     IF the number is 1
@@ -185,7 +141,7 @@ FUNCTION: assignComputerChoice()
     ELSE
         Display "There was an error generating the computer's choice"
 
-    RETURN - return the computer's choice.
+    RETURN - return the computer's choice or the error message.
 END FUNCTION
 
 
@@ -194,9 +150,11 @@ END FUNCTION
         GET USER CHOICE
 *************************************************************
 
-/* ----- This function GETS the user input ROCK, PAPER, or SCISSORS.----- */
+/* ----- This function GETS the user input ROCK, PAPER, or SCISSORS. ----- */
         
 FUNCTION: getUserChoice(input)
+
+    INIT userChoice
 
     WHILE userChoice is not a string containing ROCK, PAPER, SCISSORS, YES, or NO:
         
@@ -217,21 +175,21 @@ END FUNCTION
 
 /*----- This will take the user and computer round results from computerChoice and userChoice, and determine the winner of the round -----*/
 
-FUNCTION: determineRoundWinner(getUserChoice.userChoice, assignComputerChoice.computerChoice)
+FUNCTION: determineRoundWinner(userChoice, computerChoice)
 
     SWITCH
 
         CASE 1 - the computer and the user chose the same thing
-            UPDATE - STRING "TIE" to gameState's roundWinner object
+            UPDATE - STRING "TIE" to gameState's roundWinner
 
         CASE 2 - ROCK beats SCISSORS
-            UPDATE - ROCK player to gameState's roundWinner object
+            UPDATE - ROCK player to gameState's roundWinner
 
         CASE 3 - SCISSORS beats PAPER
-            UPDATE - SCISSORS player to roundWinner object
+            UPDATE - SCISSORS player to roundWinner
 
         CASE 4 - PAPER beats ROCK
-            UPDATE - PAPER player to roundWinner object
+            UPDATE - PAPER player to roundWinner
 
     UPDATE roundWinner with "TIE", userRoundWinner, or computerRoundWinner
 
@@ -240,24 +198,6 @@ FUNCTION: determineRoundWinner(getUserChoice.userChoice, assignComputerChoice.co
 END FUNCTION
 
 
-*************************************************************
-        INCREASE WINNER SCORE
-*************************************************************
-
-/*----- This will take the results from determineRoundWinner and increment their score. This function should not be called in case of a draw. -----*/
-
-FUNCTION: increaseWinnerScore(determineRoundWinner.roundWinner)
-
-    IF the user won,
-        INCREMENT user's score 
-
-    ELSE 
-        INCREMENT computer's score
-
-    RETURN updated score
-
-END FUNCTION
-
 
 *************************************************************
         ANNOUNCE ROUND WINNER
@@ -265,22 +205,51 @@ END FUNCTION
 
 /*----- This will take roundWinner from determineRoundWinner and announce the winner. The roundWinner value is reassigned to the winner's name to utilize the placeholder in the LOG message -----*/
 
-FUNCTION: announceRoundWinner(determineRoundWinner.roundWinner)
+FUNCTION: announceRoundWinner(roundWinner)
 
-    /*--- Short-circuit ---*/
-    IF the roundWinner variable value is "TIE":
-        LOG - tell the user it's a tie.
-        RETURN - exit function
-    ELSE 
-        CONTINUE
-        
+    SWITCH
+        CASE 1 it's a tie (the roundWinner variable value is "TIE"):
+            LOG - tell the user it's a tie.
+            RETURN - exit function
+
+        CASE 2 the user won (variable value is userRoundWinner):
+            LOG - tell user they won the round.
+            RETURN - exit function
+
+        CASE 3 the computer won (variable value is computerRoundWinner)
+            LOG - tell user the winner won the round.
+            RETURN - exit function
+
+END FUNCTION
+
+
+
+*************************************************************
+        INCREASE WINNER SCORE
+*************************************************************
+
+/*----- This will take the results from determineRoundWinner and increment their score. This function should not be called in case of a draw. -----*/
+
+FUNCTION: increaseWinnerScore(roundWinner)
+
+    /*--- short circuit: we don't need to display the score on a tie ---*/
+    
+    IF it's a tie (the roundWinner variable value is "TIE"):
+        RETURN - Exit function
+    END IF
+
+
     IF the user won (variable value is userRoundWinner):
-        LOG - tell user they won the round.
-        RETURN - exit function
-    ELSE
-        LOG - tell user the winner won the round.
-        RETURN - exit function
-        
+        INCREMENT user's score with gameState.userScore object
+
+    ELSE (variable value is computerRoundWinner)
+        INCREMENT computer's score with gameState.computerScore object
+    
+    END IF
+
+
+    RETURN LOG - tell the user the scores of both players
+
 END FUNCTION
 
 
