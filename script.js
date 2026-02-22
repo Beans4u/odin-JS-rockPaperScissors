@@ -1,9 +1,4 @@
 // --------------------------------------------------------------------------------
-//                             ROCK PAPER SCISSORS GAME
-// --------------------------------------------------------------------------------
-
-
-// --------------------------------------------------------------------------------
 //                         GAME PROGRAM
 // --------------------------------------------------------------------------------
 
@@ -12,7 +7,7 @@
 //         gameInit, playGame: BEGIN GAME
 // *************************************************************
 
-// HOUSEKEEPING: I need to find a better way to handle the gameState, and make sure that the values reset when a new game starts.
+
 
 function playGame() {
 
@@ -28,7 +23,6 @@ function playGame() {
         /*--- This will keep track of the rounds played, which will be used to determine when the game is over ---*/
     };
 
-
     while (gameState.roundCounter < 5) {
 
         ++gameState.roundCounter;
@@ -36,9 +30,7 @@ function playGame() {
         let computerChoiceResult = getComputerChoice()
         // RETURNS computerChoice assigned with "ROCK", "PAPER", or "SCISSORS"
 
-        let rpsInput = prompt("Enter ROCK, PAPER, or SCISSORS");
-
-        let userChoiceInput = getUserChoice(rpsInput);
+        let userChoiceInput = getUserChoiceRPS();
         // RETURNS userChoice in an uppercase string containing either "ROCK", "PAPER", or "SCISSORS"
 
         let roundWinner = determineRoundWinner(userChoiceInput, computerChoiceResult)
@@ -47,30 +39,47 @@ function playGame() {
 
         announceRoundWinner(roundWinner);
         // Announces the winner of this round
-        // RETURNS LOG tell user it's a tie, or that they won, or that the computer won
+        // RETURNS text: tell user it's a tie, or that they won, or that the computer won
 
-        increaseWinnerScore(roundWinner);
+        increaseWinnerScore(roundWinner, gameState);
         // Increases the score of the one who won the round
-        // RETURNS LOG tell the user the scores of both players
+        // RETURNS text: tell the user the scores of both players
 
     } // END OF WHILE LOOP
 
-    return gameState;
-}
+        announceGameWinner(gameState);
+        // Announces the winner of this round
+        // RETURNS text: tell user it's a tie, or that they won, or that the computer won
 
+        let displayScore = JSON.stringify(gameState, null, 4);
+    
+        window.confirm(`Current score: ${displayScore}`);
+
+    return gameOver();
+
+}
 
 function gameOver() {
     
-    const newGameInput = prompt("Do you want to play a new game?");
+    const newGameInput = prompt("Do you want to play a new game? Enter YES or NO.").toUpperCase();
 
-    const newGame = getComputerChoice(newGameInput);
+    /*--- Short circuit  ---*/
+    if (newGameInput === "" || newGameInput === null) {
+    newGameInput = window.prompt("You didn't enter anything, please try again. Do you want to play a new game? Enter YES or NO.");
+    return gameOver(newGameInput);
+    }
 
-    if (newGame === "YES") {
-        return playGame();
+
+    if (newGameInput !== "YES" && newGameInput !== "NO") {
+    newGameInput = prompt("Your answer was invalid, please try again. Do you want to play a new game? Enter YES or NO.");
+    return gameOver(newGameInput);
     }
-    else {
-        return console.log("Thank you for playing!");
+
+    if (newGameInput === "NO") {
+        return window.confirm("Thank you for playing!");
     }
+
+    return playGame();
 }
 
 
@@ -81,7 +90,6 @@ function gameOver() {
 // --------------------------------------------------------------------------------
 
 
-
 // *************************************************************
 //         GET COMPUTER CHOICE
 // *************************************************************
@@ -90,7 +98,7 @@ function gameOver() {
 function getComputerChoice() {
 /*----- This will determine the computerChoice for the round. It will randomize a number from 1 to 3, which will output ROCK, PAPER, or SCISSORS respectively -----*/
 
-    let number = Math.floor(Math.random() * 3) + 1;
+    const number = Math.floor(Math.random() * 3) + 1;
     let computerChoice = null;
 
     if (number === 1) {
@@ -106,7 +114,7 @@ function getComputerChoice() {
     }
 
     else {
-        const errorMessage = console.log("There was an error generating the computer's choice");
+        const errorMessage = window.confirm("There was an error generating the computer's choice");
         return errorMessage;
     }
 }
@@ -114,19 +122,25 @@ function getComputerChoice() {
 
 
 // *************************************************************
-//         GET USER CHOICE
+//         GET USER CHOICE - RPS (ROCK PAPER SCISSORS)
 // *************************************************************
 
 
-function getUserChoice(rpsInput) {
+function getUserChoiceRPS() {
 /* ----- This function GETS the user input ROCK, PAPER, or SCISSORS. ----- */
 
-    let userChoice = String.toUpperCase(rpsInput); 
+    let rpsInput = window.prompt("What do you choose, ROCK, PAPER, or SCISSORS?");
+    
+    let userChoice = rpsInput.toUpperCase(); 
 
-    while (userChoice !== "ROCK" || userChoice !== "PAPER" || userChoice !== "SCISSORS" || userChoice !== "YES" || userChoice !== "NO") {
+    if (userChoice === "" || userChoice === null) {
+        window.confirm("Your answer is invalid, please try again.");
+        return rpsInput = getUserChoiceRPS(rpsInput); 
+    }
 
-        rpsInput = prompt("Your answer was invalid, please try again.");
-        getUserChoice(rpsInput); // do I need this?
+    if (userChoice !== "ROCK" && userChoice !== "PAPER" && userChoice !== "SCISSORS") {
+        window.confirm("Your answer is invalid, please try again.");
+        return rpsInput = getUserChoiceRPS(rpsInput); 
     }
 
     return userChoice;
@@ -148,6 +162,11 @@ function determineRoundWinner(userChoiceInput, computerChoiceResult) {
 
     let roundWinner = null;
 
+
+    // HANDLING THE TIE (short-circuit)
+    if (userChoice === computerChoice) {
+        return roundWinner = "TIE";
+    }
 
     // ROCK BEATS SCISSORS
     if  (userChoice === "ROCK" && computerChoice === "SCISSORS") {
@@ -171,7 +190,7 @@ function determineRoundWinner(userChoiceInput, computerChoiceResult) {
     else if (userChoice === "PAPER" && computerChoice === "ROCK") {
         roundWinner = "USER";
     }
-    else {
+    else if (userChoice === "ROCK" && computerChoice === "PAPER") {
         roundWinner = "COMPUTER";
     }
 
@@ -184,23 +203,20 @@ function determineRoundWinner(userChoiceInput, computerChoiceResult) {
 //         ANNOUNCE ROUND WINNER
 // *************************************************************
 
-// HOUSEKEEPING: need to ensure using return instead of break works as expected.
-
 
 function announceRoundWinner(roundWinner) {
-/*----- This will take roundWinner from determineRoundWinner and announce the winner. The roundWinner value is reassigned to the winner's name to utilize the placeholder in the LOG message -----*/
-    const roundWinner = roundWinner;
+/*----- This will take value of roundWinner from determineRoundWinner and announce the winner. -----*/
 
-    switch (true) {
+    switch (roundWinner) {
 
-        case roundWinner("TIE"):
-            return console.log("It's a tie!");
+        case "TIE":
+            return window.confirm("It's a tie!");
 
-        case roundWinner("USER"):
-            return console.log("You won this round!");
+        case "USER":
+            return window.confirm("You won this round!");
 
-        case roundWinner("COMPUTER"):
-            return console.log("The computer won this round!");
+        case "COMPUTER":
+            return window.confirm("The computer won this round!");
     }
 
 }
@@ -212,12 +228,11 @@ function announceRoundWinner(roundWinner) {
 // *************************************************************
 
 
-function increaseWinnerScore(roundWinner) {
-/*----- This will take the results from determineRoundWinner and increment their score. This function should not be called in case of a draw. -----*/
+function increaseWinnerScore(roundWinner, gameState) {
+/*----- This will take the results from determineRoundWinner and increment their score. -----*/
 
-    const roundWinner = roundWinner;
 
-    /*--- short circuit: we don't need to display the score on a tie ---*/
+    /*--- short circuit: we don't need to increase the score on a tie ---*/
     if (roundWinner === "TIE") {
         return;
     }
@@ -241,19 +256,23 @@ function increaseWinnerScore(roundWinner) {
 
 
 function announceGameWinner(gameState) {
-// /*----- This will announce the winner of the game. gameWinner can be used as a placeholder for the announcement to fill in TIE, YOU, or COMPUTER. e.g. "PLACEHOLDER won the game!". -----*/
+/*----- This will announce the winner of the game. -----*/
 
     const userScore = gameState.userScore;
     const computerScore = gameState.computerScore;
 
-//     /*--- Short-circuit ---*/
         if (userScore === computerScore) {
-            return console.log("The game ends in a tie!");
+            return window.confirm("The game ends in a tie!");
         }
         else if (userScore < computerScore) {
-            return console.log("A winner is you!");
+            return window.confirm("A winner is you! (you won the game!)");
         }
         else {
-            return console.log("Bad end.");
+            return window.confirm("Bad end. (you lost the game)");
         }
 }
+
+
+// On load, start game
+
+playGame()
