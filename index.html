@@ -1,13 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="./style.css" />
     <script src="./script.js"></script>
-</head>
-<body>
-    <h1>Rock, Paper, Scissors</h1>
-    <p>Project: Rock Paper Scissors. This page serves as a live environment for testing JavaScript logic, loops, and conditional statements as part of The Odin Project curriculum.</p>
-</body>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200;300;400&display=swap');
+    </style>
+  </head>
+  <body>
+    <div id="crt-screen">
+      <!-- + + + GAME TITLE + + + -->
+      <div class="container">
+        <h1>Rock, Paper, Scissors</h1>
+      </div>
+
+      <!-- + + + USER CHOICE BUTTONS + + + -->
+      <div class="container">
+        <h2>Throw hands:</h2>
+        <button class="btn-rps-selection" id="btn-ROCK">ROCK</button>
+        <button class="btn-rps-selection" id="btn-PAPER">PAPER</button>
+        <button class="btn-rps-selection" id="btn-SCISSORS">SCISSORS</button>
+      </div>
+
+      <!-- + + + ROUND RESULTS + + + -->
+      <div class="container">
+        <h2>Arena</h2>
+        <!-- + below will be populated via JS + -->
+        <div id="player-choice-text">
+          <!-- + e.g. "you chose rock. computer chose paper. you win this round" + -->
+        </div>
+        <div id="player-round-results">
+          <!-- + e.g. "you win!" + -->
+        </div>
+      </div>
+
+      <!-- + + + SCORE BOARD + + + -->
+      <div class="container">
+        <!-- + below will be populated via JS + -->
+        <h2>Scoreboard</h2>
+        <div id="score-board"></div>
+        <div id="round-number"></div>
+      </div>
+
+      <!-- + + + START NEW GAME + + + -->
+      <div class="container">
+        <div id="play-again-container">
+          <h2>Play again?</h2>
+          <button id="btn-play-again">Ok</button>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <p>
+        This project is part of The Odin Project JavaScript Foundations
+        curriculum. The original implementation was console-based. It has been
+        refactored to include a browser UI using DOM manipulation and
+        event-driven input.
+      </p>
+    </footer>
+  </body>
 </html>
