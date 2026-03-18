@@ -44,8 +44,7 @@ const gameState = {
 // *************************************************************
 
 // GAME BUTTONS: add or remove disable button styles
-newGameButton.disabled = true;
-newGameButton.classList.add('disabled-button');
+
 choiceButtons.disabled = false;
 choiceButtons.forEach((choiceButton) => {
   choiceButton.classList.remove('disabled-button');
@@ -91,12 +90,13 @@ choiceButtons.forEach((button) => {
         choiceButtons.disabled = true;
         choiceButtons.forEach((choiceButton) => {
           choiceButton.classList.add('disabled-button');
+
+          newGameButton.disabled = false;
+          newGameButton.classList.remove('disabled-button');
         });
-        newGameButton.disabled = false;
-        newGameButton.classList.remove('disabled-button');
 
         displayGameWinner(gameState);
-      }
+      } //end of 5 rounds IF statement
     } // end of IF statement
   });
 });
@@ -132,6 +132,7 @@ newGameButton.addEventListener('click', () => {
     choiceButton.classList.remove('disabled-button');
   });
   newGameButton.disabled = true;
+  newGameButton.classList.add('disabled-button');
 });
 
 // --------------------------------------------------------------------------------
