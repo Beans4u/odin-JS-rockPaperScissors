@@ -42,6 +42,8 @@ const gameState = {
 // *************************************************************
 //         BEGIN GAME
 // *************************************************************
+
+// GAME BUTTONS: add or remove disable button styles
 newGameButton.disabled = true;
 newGameButton.classList.add('disabled-button');
 choiceButtons.disabled = false;
@@ -124,8 +126,11 @@ newGameButton.addEventListener('click', () => {
   gameProgressHeader.textContent = 'Game not started.';
   gameProgressText.textContent = '[waiting for user...]';
 
-  // choiceButtons.classList.add('disabled-button'); //in a loop
-  choiceButtons.disabled = false;
+  // GAME BUTTONS: add or remove disable button styles
+  choiceButtons.disabled = true;
+  choiceButtons.forEach((choiceButton) => {
+    choiceButton.classList.remove('disabled-button');
+  });
   newGameButton.disabled = true;
 });
 
