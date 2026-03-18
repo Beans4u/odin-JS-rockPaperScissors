@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock Paper Scissors</title>
     <link rel="stylesheet" href="./style.css" />
-    <script src="./script.js"></script>
+    <script src="./script.js" defer></script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200;300;400&display=swap');
     </style>
@@ -18,48 +18,49 @@
       </div>
 
       <!-- + + + USER CHOICE BUTTONS + + + -->
-      <div class="container">
+      <div class="container" id="btn-choice-container">
         <h2>Throw hands:</h2>
-        <button class="btn-rps-selection" id="btn-ROCK">ROCK</button>
-        <button class="btn-rps-selection" id="btn-PAPER">PAPER</button>
-        <button class="btn-rps-selection" id="btn-SCISSORS">SCISSORS</button>
+        <button class="btn-choice" id="btn-rock">ROCK</button>
+        <button class="btn-choice" id="btn-paper">PAPER</button>
+        <button class="btn-choice" id="btn-scissors">SCISSORS</button>
       </div>
 
       <!-- + + + ROUND RESULTS + + + -->
       <div class="container">
-        <h2>Arena</h2>
+        <h2>RPS Arena</h2>
         <!-- + below will be populated via JS + -->
         <div id="player-choice-text">
-          <!-- + e.g. "you chose rock. computer chose paper. you win this round" + -->
+          <!-- + e.g. "you chose rock. computer chose paper." + -->
+          Click ROCK, PAPER, or SCISSORS to start the game.
         </div>
         <div id="player-round-results">
-          <!-- + e.g. "you win!" + -->
+          <!-- + e.g. "you win this round!" + -->
+          Game will end after five rounds.
         </div>
       </div>
 
       <!-- + + + SCORE BOARD + + + -->
       <div class="container">
         <!-- + below will be populated via JS + -->
-        <h2>Scoreboard</h2>
-        <div id="score-board"></div>
-        <div id="round-number"></div>
+        <h2>Score Board</h2>
+        <div id="score-board">User score: 0 | Computer score: 0 | Ties: 0</div>
+        <div id="round-number">Round number: 0</div>
       </div>
 
       <!-- + + + START NEW GAME + + + -->
       <div class="container">
-        <div id="play-again-container">
-          <h2>Play again?</h2>
-          <button id="btn-play-again">Ok</button>
+        <div>
+          <h2 id="game-progress-header">Game not started.</h2>
+          <p id="game-progress-text">[waiting for user...]</p>
+          <button id="btn-play-again">NEW GAME</button>
         </div>
       </div>
     </div>
     <footer>
-      <p>
-        This project is part of The Odin Project JavaScript Foundations
-        curriculum. The original implementation was console-based. It has been
-        refactored to include a browser UI using DOM manipulation and
-        event-driven input.
-      </p>
+      This project is part of The Odin Project JavaScript Foundations
+      curriculum. The original implementation was console-based. It has been
+      refactored to include a browser UI using DOM manipulation and event-driven
+      input.
     </footer>
   </body>
 </html>

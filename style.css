@@ -9,6 +9,15 @@
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='overflow:visible;'><path d='M1,1 l0,18 l5,-5 l5,10 l3,-2 l-5,-10 l8,0 z' fill='rgb(5,54,5)' stroke='rgb(21,197,21)' stroke-width='1.5' style='filter:drop-shadow(0 0 2px rgb(162,216,162));'/></svg>"),
     auto;
 }
+.disabled-button {
+  background-color: rgb(44, 48, 44);
+  border: 1px solid rgb(91, 102, 91);
+  box-shadow: 0 0 2px var(--text-glow-effect);
+  text-shadow: 0 0 2px var(--text-glow-effect);
+  color: rgb(91, 102, 91);
+  pointer-events: none;
+}
+
 body {
   background-color: var(--screen-bg-color);
   cursor: var(--custom-cursor);
@@ -16,7 +25,8 @@ body {
 body,
 button,
 h1,
-h2 {
+h2,
+div {
   font-family: 'IBM Plex Mono', monospace;
   color: var(--primary-color);
   text-shadow: 0 0 3px var(--text-glow-effect);
@@ -24,32 +34,29 @@ h2 {
 }
 .container {
   border: 2px solid var(--container-border);
+  box-shadow: 0 0 3px var(--text-glow-effect);
   margin-bottom: 10px;
   padding: 0 20px 20px 20px;
   max-width: 800px;
 }
-p {
+footer {
   max-width: 800px;
+  text-shadow: 0 0 3px var(--text-glow-effect);
   font-size: 14px;
   line-height: 1.5;
 }
 button {
   padding: 10px 20px;
   margin: 5px;
-  border: none;
   border: 1px solid var(--primary-color);
-  background-color: (var(--button-bg-color));
+  box-shadow: 0 0 3px var(--text-glow-effect);
+  background-color: var(--button-bg-color);
   font-size: 16px;
   letter-spacing: 1px;
   cursor: var(--custom-cursor);
 }
 button:hover {
-  background-color: (var(--button-hover-color));
-}
-
-#btn-play-again {
-  color: var(--primary-color);
-  font-size: 16px;
+  background-color: var(--button-hover-color);
 }
 
 #game-title {
