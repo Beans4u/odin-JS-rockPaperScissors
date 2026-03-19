@@ -7,7 +7,7 @@
 // *************************************************************
 
 //  + + + THROW HANDS + + +
-const choiceButtons = document.querySelectorAll('#btn-choice-container button');
+let choiceButtons = document.querySelectorAll('#btn-choice-container button');
 
 //  + + + RPS ARENA + + +
 const playerChoiceText = document.getElementById('player-choice-text');
@@ -39,14 +39,16 @@ const gameState = {
   /*--- This will keep track of the rounds played, which will be used to determine when the game is over ---*/
 };
 
+const MAX_ROUNDS = 5;
+
 // *************************************************************
 //         BEGIN GAME
 // *************************************************************
 
 // GAME BUTTONS: add or remove disable button styles
 
-choiceButtons.disabled = false;
 choiceButtons.forEach((choiceButton) => {
+  choiceButton.disabled = false;
   choiceButton.classList.remove('disabled-button');
 });
 
@@ -57,6 +59,7 @@ choiceButtons.forEach((button) => {
       ++gameState.roundCounter;
 
       /* ----- Updates the status text in the Game Status area. ----- */
+      gameProgressHeader.textContent = 'Round started';
       gameProgressText.textContent = '[game in progress...]';
 
       /* ----- This function gets the user's hand as ROCK, PAPER, or SCISSORS. ----- */
@@ -66,11 +69,9 @@ choiceButtons.forEach((button) => {
       // RETURNS computerChoice assigned with "ROCK", "PAPER", or "SCISSORS"
       let computerChoiceResult = getComputerChoice();
 
-      let roundWinner = determineRoundWinner(userChoice, computerChoiceResult);
-
       // Compares user and computer selections and determines the winner of the round.
       // RETURNS roundWinner with value "TIE", userRoundWinner, or computerRoundWinner
-      determineRoundWinner(userChoice, computerChoiceResult);
+      let roundWinner = determineRoundWinner(userChoice, computerChoiceResult);
 
       // Increases the score of the one who won the round
       // RETURNS text: tell the user the scores of both players
@@ -81,21 +82,24 @@ choiceButtons.forEach((button) => {
       displayArenaText(roundWinner, userChoice, computerChoiceResult);
       displayRoundScores(gameState);
 
-      if (gameState.roundCounter === 5) {
+      if (gameState.roundCounter === MAX_ROUNDS) {
         // displayGameWinner(gameState);
         // Announces the winner of this round
         // RETURNS text: tell user it's a tie, or that they won, or that the computer won
 
         // maybe change the brightness of the button backgrounds to make it more obvious.
-        choiceButtons.disabled = true;
+
         choiceButtons.forEach((choiceButton) => {
           choiceButton.classList.add('disabled-button');
+          choiceButtons.disabled = true;
 
           newGameButton.disabled = false;
           newGameButton.classList.remove('disabled-button');
         });
 
-        displayGameWinner(gameState);
+        // END OF 5 ROUNDS: DETERMINE GAME WINNER
+        const gameWinner = determineGameWinner(gameState);
+        displayGameWinner(gameWinner);
       } //end of 5 rounds IF statement
     } // end of IF statement
   });
@@ -234,8 +238,7 @@ function displayArenaText(roundWinner, userChoice, computerChoiceResult) {
       playerChoiceText.textContent = 'The computer won this round!';
       break;
   }
-  playerRoundResults.textContent =
-    'You chose ' + userHand + ' and the computer chose ' + computerHand;
+  playerRoundResults.textContent = `You chose ${userHand} and the computer chose ${computerHand}`;
 }
 
 // *************************************************************
@@ -249,30 +252,41 @@ function displayRoundScores(gameState) {
   const currentTiesScore = gameState.tiesScore;
   const currentRound = gameState.roundCounter;
 
-  scoreBoard.textContent =
-    'User score: ' +
-    currentUserScore +
-    ' | Computer score: ' +
-    currentComputerScore +
-    ' | Ties: ' +
-    currentTiesScore;
+  scoreBoard.textContent = `User score: ${currentUserScore} | Computer score: ${currentComputerScore} | Ties:
+    ${currentTiesScore}`;
 
-  roundNumber.textContent = 'Round: ' + currentRound;
+  roundNumber.textContent = `Round: ${currentRound}`;
 }
 
 // *************************************************************
-//         END OF 5 ROUNDS: ANNOUNCE GAME WINNER
+//         END OF 5 ROUNDS: DETERMINE GAME WINNER
 // *************************************************************
 
-function displayGameWinner(gameState) {
-  /*----- This will announce the winner of the game. -----*/
+function determineGameWinner(gameState) {
+  /*----- This will determine the winner of the game. -----*/
   const userScore = gameState.userScore;
   const computerScore = gameState.computerScore;
 
   if (userScore === computerScore) {
+    return 'TIE';
+  } else if (userScore > computerScore) {
+    return 'USER';
+  } else {
+    return 'COMPUTER';
+  }
+}
+// *************************************************************
+//         END OF 5 ROUNDS: ANNOUNCE GAME WINNER
+// *************************************************************
+
+function displayGameWinner(winResult) {
+  /*----- This will announce the winner of the game. -----*/
+  const gameWinner = winResult;
+
+  if (gameWinner === 'TIE') {
     gameProgressHeader.textContent = "YOU'RE EQUAL IN STRENGTH.";
     return (gameProgressText.textContent = '[the game is tied]');
-  } else if (userScore > computerScore) {
+  } else if (gameWinner === 'USER') {
     gameProgressHeader.textContent = 'A WINNER IS YOU!';
     return (gameProgressText.textContent = '[you won the game]');
   } else {

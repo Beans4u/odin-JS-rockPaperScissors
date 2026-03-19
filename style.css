@@ -55,7 +55,7 @@ button {
   letter-spacing: 1px;
   cursor: var(--custom-cursor);
 }
-button:hover {
+button:not(:disabled):hover {
   background-color: var(--button-hover-color);
 }
 

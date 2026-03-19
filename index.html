@@ -11,49 +11,43 @@
     </style>
   </head>
   <body>
-    <div id="crt-screen">
-      <!-- + + + GAME TITLE + + + -->
-      <div class="container">
-        <h1>Rock, Paper, Scissors</h1>
-      </div>
+    <!-- + + + GAME TITLE + + + -->
+    <div class="container">
+      <h1>Rock, Paper, Scissors</h1>
+    </div>
 
-      <!-- + + + USER CHOICE BUTTONS + + + -->
-      <div class="container" id="btn-choice-container">
-        <h2>Throw hands:</h2>
-        <button class="btn-choice" id="btn-rock">ROCK</button>
-        <button class="btn-choice" id="btn-paper">PAPER</button>
-        <button class="btn-choice" id="btn-scissors">SCISSORS</button>
-      </div>
+    <!-- + + + USER CHOICE BUTTONS + + + -->
+    <div class="container" id="btn-choice-container">
+      <h2>Throw hands:</h2>
+      <button class="btn-choice" id="btn-rock">ROCK</button>
+      <button class="btn-choice" id="btn-paper">PAPER</button>
+      <button class="btn-choice" id="btn-scissors">SCISSORS</button>
+    </div>
 
-      <!-- + + + ROUND RESULTS + + + -->
-      <div class="container">
-        <h2>RPS Arena</h2>
-        <!-- + below will be populated via JS + -->
-        <div id="player-choice-text">
-          <!-- + e.g. "you chose rock. computer chose paper." + -->
-          Click ROCK, PAPER, or SCISSORS to start the game.
-        </div>
-        <div id="player-round-results">
-          <!-- + e.g. "you win this round!" + -->
-          Game will end after five rounds.
-        </div>
+    <!-- + + + ROUND RESULTS + + + -->
+    <div class="container">
+      <h2>RPS Arena</h2>
+      <!-- + below will be replaced via JS + -->
+      <div id="player-choice-text">
+        Click ROCK, PAPER, or SCISSORS to start the game.
       </div>
+      <div id="player-round-results">Game will end after five rounds.</div>
+    </div>
 
-      <!-- + + + SCORE BOARD + + + -->
-      <div class="container">
-        <!-- + below will be populated via JS + -->
-        <h2>Score Board</h2>
-        <div id="score-board">User score: 0 | Computer score: 0 | Ties: 0</div>
-        <div id="round-number">Round number: 0</div>
-      </div>
+    <!-- + + + SCORE BOARD + + + -->
+    <div class="container">
+      <!-- + below will be replaced via JS + -->
+      <h2>Score Board</h2>
+      <div id="score-board">User score: 0 | Computer score: 0 | Ties: 0</div>
+      <div id="round-number">Round number: 0</div>
+    </div>
 
-      <!-- + + + START NEW GAME + + + -->
-      <div class="container">
-        <div>
-          <h2 id="game-progress-header">Game not started.</h2>
-          <p id="game-progress-text">[waiting for user...]</p>
-          <button id="btn-play-again">NEW GAME</button>
-        </div>
+    <!-- + + + GAME PROGRESS / NEW GAME + + + -->
+    <div class="container">
+      <div>
+        <h2 id="game-progress-header">Game not started.</h2>
+        <p id="game-progress-text">[waiting for user...]</p>
+        <button id="btn-play-again">NEW GAME</button>
       </div>
     </div>
     <footer>
