@@ -2,7 +2,9 @@
 
 ## Purpose
 
-This project is part of The Odin Project JavaScript Foundations curriculum. The original implementation was console-based. It has been refactored to include a browser UI using DOM manipulation and event-driven input.
+This project demonstrates the transition from a console-based application to an interactive browser experience, focusing on DOM manipulation, event handling, and structuring JavaScript for UI-driven applications.
+
+This project was completed as part of The Odin Project JavaScript Foundations curriculum.
 
 ![screenshot](./rps-screen.png 'Rock Paper Scissors screenshot')
 
